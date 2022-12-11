@@ -34,7 +34,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.25}
   m_AnchorMax: {x: 1, y: 0.75}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -14, y: -14}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &3655012270721664857
 GameObject:
@@ -532,7 +532,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 0}
   m_FillRect: {fileID: 3655012270781618170}
   m_HandleRect: {fileID: 0}
@@ -556,7 +556,7 @@ GameObject:
   - component: {fileID: 3655012271399126113}
   - component: {fileID: 3655012271399126112}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: txtHp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -930,6 +930,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hpBar: {fileID: 3655012271255505645}
   imgFill: {fileID: 3655012270781618171}
+  txtHp: {fileID: 3655012271399126112}
   txtLv: {fileID: 3655012272505771580}
   txtName: {fileID: 3655012270721664855}
   txtGlod: {fileID: 3655012270744611865}

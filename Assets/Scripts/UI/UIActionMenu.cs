@@ -12,7 +12,12 @@ public class UIActionMenu : MonoBehaviour
 
     void Start()
     {
-        
+        btnBattle.onClick.AddListener(OnClickBattle);
+    }
+
+    void OnClickBattle()
+    {
+        ScenesManager.GetInstance().ChangeScene(Scene.Battle);
     }
 
 }

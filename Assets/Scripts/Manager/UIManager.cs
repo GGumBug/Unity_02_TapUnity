@@ -43,6 +43,21 @@ public class UIManager : MonoBehaviour
             uiList[uiName].SetActive(false);
     }
 
+    public GameObject GetUI(string uiName)
+    {
+        if (uiList.ContainsKey(uiName))
+        {
+            return uiList[uiName];
+        }
+
+        return null;
+    }
+
+    public void ClearList() // 씬이 전환 될때 하이어라키 창에 게임오브젝트는 파괴되지만 딕션에어리의 정보는 돈디스트로이드로 유지가돼서 씬전환때 클리어 해주는 용도.
+    {
+        uiList.Clear();
+    }
+
     #endregion
 
     public void SetEventSystem()

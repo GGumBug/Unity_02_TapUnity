@@ -6,6 +6,8 @@ public class MenuScene : MonoBehaviour
 {
     private void Start() 
     {
+        GameManager.GetInstance().LoadData();
+
         UIManager.GetInstance().SetEventSystem();
         UIManager.GetInstance().OpenUI("UIMainMenu");
     }

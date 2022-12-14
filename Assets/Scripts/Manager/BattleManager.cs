@@ -6,6 +6,8 @@ public class BattleManager : MonoBehaviour
 {
     #region Singletone
     private static BattleManager Instance = null;
+
+    ParticleSystem particle;
     public static BattleManager GetInstance()
     {
         if (Instance == null)
@@ -28,6 +30,8 @@ public class BattleManager : MonoBehaviour
         monsterData = monster;
 
         UIManager.GetInstance().OpenUI("UITab");
+
+        EffectManger.GetInstance().InitEffectPool(10);
 
         StartCoroutine("BattleProgress");
     }
@@ -55,17 +59,9 @@ public class BattleManager : MonoBehaviour
 
     public void AttckMonster()
     {
-        float randX = Random.Range(-1.7f, 1.7f);
-        float randY = Random.Range(-1.7f, 1.7f);
-
         // var particle = ObjectManager.GetInstance().CreateHitEffect(); // var는 리턴값에 있는 형식을 자동으로 치환해 준다. 예를 들어 리턴 값이 숫자면 int 문자면 string으로
-        var particle = ObjectPool.GetObject();
-        particle.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
-        particle.transform.localPosition = new Vector3(0 + randX, 0.7f + randY, -0.5f);
-        particle.ShootEffect();
-
-
-
+        //var particle = ObjectPool.GetObject();
+        EffectManger.GetInstance().UseEffect();
         monsterData.hp--;
 
         if (monsterData.hp <= 0)

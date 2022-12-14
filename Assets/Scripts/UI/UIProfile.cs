@@ -30,5 +30,6 @@ public class UIProfile : MonoBehaviour
         hpBar.maxValue = GameManager.GetInstance().totalHp;
 
         txtHp.text = $"{hpBar.value} / {hpBar.maxValue}";
+        GameManager.GetInstance().SaveData();
     }
 }

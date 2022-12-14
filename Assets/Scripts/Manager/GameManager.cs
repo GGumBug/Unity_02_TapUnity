@@ -25,9 +25,28 @@ public class GameManager : MonoBehaviour
     public int totalHp = 100;
     public int curHp = 100;
 
+    public void LoadData()
+    {
+        playerName = PlayerPrefs.GetString("playerName", "JooWoojae"); // 뒤에오는 인자값은 만약 "playerName"이 null이면 "JooWoojae"를 넣어준다.
+
+        lv = PlayerPrefs.GetInt("lv", 1);
+        gold = PlayerPrefs.GetInt("gold", 500);
+        totalHp = PlayerPrefs.GetInt("totalHp", 100);
+        curHp = PlayerPrefs.GetInt("curHp", 100);
+    }
+
+    public void SaveData()
+    {
+        PlayerPrefs.SetString("playerName", playerName);
+        PlayerPrefs.SetInt("lv", lv);
+        PlayerPrefs.SetInt("gold", gold);
+        PlayerPrefs.SetInt("totalHp", totalHp);
+        PlayerPrefs.SetInt("curHp", curHp);
+    }
     public void AddGold(int gold)
     {
         this.gold += gold;
+        SaveData();
     }
 
     public bool SpendAddGold(int gold)
@@ -35,6 +54,7 @@ public class GameManager : MonoBehaviour
         if (this.gold >= gold)
         {
             this.gold -= gold;
+            SaveData();
             return true;
         }
 
@@ -44,6 +64,7 @@ public class GameManager : MonoBehaviour
     public void IncreaseTotalHP(int addHp)
     {
         totalHp += addHp;
+        SaveData();
     }
 
     public void SetHP(int hp)

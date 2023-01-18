@@ -22,12 +22,12 @@ public class UIProfile : MonoBehaviour
 
     public void RefreshState()
     {
-        txtLv.text = $"Lv. {GameManager.GetInstance().lv}";
-        txtName.text = $"{GameManager.GetInstance().playerName}";
-        txtGlod.text = $"{GameManager.GetInstance().gold}G";
+        txtLv.text = $"Lv. {GameManager.GetInstance().curPlayer.lv}";
+        txtName.text = $"{GameManager.GetInstance().curPlayer.playerName}";
+        txtGlod.text = $"{GameManager.GetInstance().curPlayer.gold}G";
 
-        hpBar.value = GameManager.GetInstance().curHp;
-        hpBar.maxValue = GameManager.GetInstance().totalHp;
+        hpBar.maxValue = GameManager.GetInstance().curPlayer.totalHp; 
+        hpBar.value = GameManager.GetInstance().curPlayer.curHp;        
 
         txtHp.text = $"{hpBar.value} / {hpBar.maxValue}";
         GameManager.GetInstance().SaveData();

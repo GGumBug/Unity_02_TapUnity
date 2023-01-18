@@ -4,10 +4,8 @@ using UnityEngine;
 
 public class MenuScene : MonoBehaviour
 {
-    private void Start() 
-    {
-        GameManager.GetInstance().LoadData();
-
+    private void Start()
+    { 
         UIManager.GetInstance().SetEventSystem();
         UIManager.GetInstance().OpenUI("UIMainMenu");
     }

@@ -5,27 +5,49 @@ using UnityEngine;
 public class BattleManager : MonoBehaviour
 {
     #region Singletone
-    private static BattleManager Instance = null;
+    private static BattleManager instance = null;
 
-    ParticleSystem particle;
-    public static BattleManager GetInstance()
+    public static BattleManager Instance
     {
-        if (Instance == null)
+        get
         {
-        GameObject go = new GameObject("@BattleManager");
-        Instance = go.AddComponent<BattleManager>();
+            if (instance == null)
+            {
+                GameObject go = new GameObject("@BattleManager");
+                instance = go.AddComponent<BattleManager>();
 
-        DontDestroyOnLoad(go);
+                DontDestroyOnLoad(go);
+            }
+            return instance;
         }
-        return Instance;
+
     }
     #endregion
 
-    public Monster1 monsterData;
+    ParticleSystem particle;
+
+    public MonsterBase[] monsterDatas = new MonsterBase[]
+    {
+        new Monster1("Monster1", 10, 30, 2.5f, 300),
+
+        new Monster2("Monster2", 15, 50, 2f, 1000),
+
+        new Monster3("Monster3", 8, 70, 2f, 1300)
+    };
+
+    public MonsterBase GetRandomMonster()
+    {
+
+        int rand = Random.Range(0, monsterDatas.Length); //Random.Range(x ,y)일때 y가 int 형식이면 y - 1로 들어간다 float는 그대로 들어간다.
+        
+        return monsterDatas[rand];
+    }
+
+    public MonsterBase monsterData;
 
     GameObject uiTab;
 
-    public void BattleStart(Monster1 monster)
+    public void BattleStart(MonsterBase monster)
     {
         monsterData = monster;
 
@@ -38,19 +60,22 @@ public class BattleManager : MonoBehaviour
 
     IEnumerator BattleProgress()
     {
-        while (GameManager.GetInstance().curHp > 0)
+        while (GameManager.GetInstance().curPlayer.curHp > 0)
         {
             yield return new WaitForSeconds(monsterData.delay);
 
-            int damage = monsterData.atk;
-            GameManager.GetInstance().SetHP(-damage);
+
+            //GameManager.GetInstance().SetHP(-damage);
+
+            monsterData.Attack();
+
             GameObject ui = UIManager.GetInstance().GetUI("UIProfile");
             if (ui != null) 
             {
                 ui.GetComponent<UIProfile>().RefreshState();
             }
             
-            Debug.Log($"몬스터가 플레이어에게 공격을 했습니다. 데미지 : {damage} 플레이어 체력 : {GameManager.GetInstance().curHp}");
+            //Debug.Log($"몬스터가 플레이어에게 공격을 했습니다. 데미지 : {damage} 플레이어 체력 : {GameManager.GetInstance().curPlayer.curHp}");
             
         }
 
@@ -77,6 +102,7 @@ public class BattleManager : MonoBehaviour
         UIManager.GetInstance().CloseUI("UITab");
 
         GameManager.GetInstance().AddGold(monsterData.gold);
+
         Invoke("MoveToMain", 2.5f);
     }
 

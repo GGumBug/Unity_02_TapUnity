@@ -4,56 +4,66 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-        #region Singletone
+    #region Singletone
     private static GameManager Instance = null;
     public static GameManager GetInstance()
     {
         if (Instance == null)
         {
-        GameObject go = new GameObject("@GameManager");
-        Instance = go.AddComponent<GameManager>();
+            GameObject go = new GameObject("@GameManager");
+            Instance = go.AddComponent<GameManager>();
 
-        DontDestroyOnLoad(go);
+            DontDestroyOnLoad(go);
         }
         return Instance;
     }
     #endregion
 
-    public string playerName = "JooWoojae";
-    public int lv = 1;
-    public int gold = 500;
-    public int totalHp = 100;
-    public int curHp = 100;
+    public Player curPlayer;
+
+    public int characterIdx = 0; // 0 - skull 1 - blackNight
+
+    public Player[] players = {
+        new Player("Character", 1, 500, 100, 100),
+        new Player("Character2", 1, 500, 120, 120),
+    };
+
+    ////캐릭터 1
+    //public int skullHp = 100;
+    //public string skullImg = "Character";
+    ////캐릭터 2
+    //public int blackNightHp = 120;
+    //public string blackNightImg = "Character2";
 
     public void LoadData()
     {
-        playerName = PlayerPrefs.GetString("playerName", "JooWoojae"); // 뒤에오는 인자값은 만약 "playerName"이 null이면 "JooWoojae"를 넣어준다.
+        curPlayer.playerName = PlayerPrefs.GetString($"playerName_{characterIdx}", "JooWoojae"); // 뒤에오는 인자값은 만약 "playerName"이 null이면 "JooWoojae"를 넣어준다.
 
-        lv = PlayerPrefs.GetInt("lv", 1);
-        gold = PlayerPrefs.GetInt("gold", 500);
-        totalHp = PlayerPrefs.GetInt("totalHp", 100);
-        curHp = PlayerPrefs.GetInt("curHp", 100);
+        curPlayer.lv = PlayerPrefs.GetInt($"lv_{characterIdx}", 1);
+        curPlayer.gold = PlayerPrefs.GetInt($"gold_{characterIdx}", 500);
+        curPlayer.totalHp = PlayerPrefs.GetInt($"totalHp_{characterIdx}", 100);
+        curPlayer.curHp = PlayerPrefs.GetInt($"curHp_{characterIdx}", 100);
     }
 
     public void SaveData()
     {
-        PlayerPrefs.SetString("playerName", playerName);
-        PlayerPrefs.SetInt("lv", lv);
-        PlayerPrefs.SetInt("gold", gold);
-        PlayerPrefs.SetInt("totalHp", totalHp);
-        PlayerPrefs.SetInt("curHp", curHp);
+        PlayerPrefs.SetString($"playerName_{characterIdx}", curPlayer.playerName);
+        PlayerPrefs.SetInt($"lv_{characterIdx}", curPlayer.lv);
+        PlayerPrefs.SetInt($"gold_{characterIdx}", curPlayer.gold);
+        PlayerPrefs.SetInt($"totalHp_{characterIdx}", curPlayer.totalHp);
+        PlayerPrefs.SetInt($"curHp_{characterIdx}", curPlayer.curHp);
     }
     public void AddGold(int gold)
     {
-        this.gold += gold;
+        curPlayer.gold += gold;
         SaveData();
     }
 
     public bool SpendAddGold(int gold)
     {
-        if (this.gold >= gold)
+        if (curPlayer.gold >= gold)
         {
-            this.gold -= gold;
+            gold -= gold;
             SaveData();
             return true;
         }
@@ -63,13 +73,23 @@ public class GameManager : MonoBehaviour
 
     public void IncreaseTotalHP(int addHp)
     {
-        totalHp += addHp;
+        curPlayer.totalHp += addHp;
         SaveData();
     }
 
     public void SetHP(int hp)
     {
-        curHp += hp;
-        Mathf.Clamp(curHp, 0 ,100); //curHp를 0보다는 작지않게 100보다는 커지지 않게 설정하는 코드.
+        curPlayer.curHp += hp;
+        if (curPlayer.curHp <= 0)
+        {
+            curPlayer.curHp = 0;
+        }
+        if (curPlayer.curHp > curPlayer.totalHp)
+        {
+            curPlayer.curHp = curPlayer.totalHp;
+        }
+
+        // Mathf.Clamp(curPlayer.curHp, 0, 100); //curHp를 0보다는 작지않게 100보다는 커지지 않게 설정하는 코드.
+        SaveData();
     }
 }

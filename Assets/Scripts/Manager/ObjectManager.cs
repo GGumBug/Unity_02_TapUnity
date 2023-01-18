@@ -19,17 +19,19 @@ public class ObjectManager : MonoBehaviour
     }
     #endregion
 
-    public GameObject CreateCharacter()
+    public GameObject CreateCharacter(string characterName)
     {
-        Object characterObj = Resources.Load("Sprite/Character");
+        Object characterObj = Resources.Load("Sprite/"+characterName);
         GameObject character = (GameObject)Instantiate(characterObj);
 
         return character;
     }
 
-    public GameObject CreateMonster()
+    public GameObject CreateMonster(string monsterName)
     {
-        Object monsterObj = Resources.Load("Sprite/Monster1");
+        Debug.Log(monsterName);
+
+        Object monsterObj = Resources.Load("Sprite/" + monsterName);
         GameObject Monster1 = (GameObject)Instantiate(monsterObj);
 
         return Monster1;
